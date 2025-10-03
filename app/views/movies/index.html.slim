@@ -2,7 +2,7 @@ div.container.mx-auto.p-6
   h1.font-bold.text-3xl.mb-6 My Movie Watch List
 
   div.flex-flex-col.items-center.max-w-500
-    / ================= Left Side (Recipe List) =================
+    / ================= Top =================
     div.col-span-2.space-y-4
       / Filter Buttons
       div.flex.space-x-4.mb-6
@@ -10,7 +10,7 @@ div.container.mx-auto.p-6
           = f.select :filter, options_for_select([['All', 'all'], ['Watched', 'read'], ['Unwatched', 'unread']], params[:filter]), class: "border rounded-lg p-2 bg-orange-500 text-white"
           = f.submit "Filter", class: "bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
       - if @movies.empty?
-        p.text-gray-600 No movies found. Please add a new movie using the form on the right.
+        p.text-gray-600 No movies found. Please add a new movie using the form bellow.
       else
         - @movies.each do |movie|
           div.bg-gray-200.shadow-md.rounded-xl.p-2.max-w-300.mb-5
@@ -29,7 +29,7 @@ div.container.mx-auto.p-6
                   -f.text_field :title, type: "hidden"
                   -f.text_field :year, type: "hidden"
 
-    / ================= Right Side (Add New Recipe Form) =================
+    / ================= Bottom =================
     div.bg-gray-50.shadow-md.rounded-xl.p-6.max-w-200.mt-10
       h2.text-lg.font-semibold.mb-4 Add New Movie
 
