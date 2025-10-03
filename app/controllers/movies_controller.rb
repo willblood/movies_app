@@ -15,6 +15,7 @@ class MoviesController < ApplicationController
   def create
     movie =  Movie.new(movie_params)
     if movie.save
+      flash[:success] = "Movie added successfully!"
       redirect_to movies_path
     else
       flash[:error] = "Failed to create movie. Please ensure all fields are filled out."
@@ -29,6 +30,7 @@ class MoviesController < ApplicationController
   def update
     movie = Movie.find(params[:id])
     if movie.update(update_movie_params)
+      flash[:success] = "Movie updated successfully!"
       redirect_to movies_path
     else
       flash[:error] = "Failed to update movie. Please ensure all fields are filled out"
@@ -39,7 +41,8 @@ class MoviesController < ApplicationController
   def destroy
     movie = Movie.find(params[:id])
     if movie.destroy
-    redirect_to movies_path
+      flash[:success] = "Movie deleted successfully!"
+      redirect_to movies_path
     else
       flash[:error] = "Failed to delete movie."
       redirect_to movies_path

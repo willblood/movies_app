@@ -1,0 +1,35 @@
+doctype html
+html
+  head
+    title Movies App
+    meta name="viewport" content="width=device-width,initial-scale=1"
+    = csrf_meta_tags
+    = csp_meta_tag
+    = stylesheet_link_tag "tailwind", "data-turbo-track": "reload"
+    = stylesheet_link_tag "application", "data-turbo-track": "reload"
+    = javascript_importmap_tags
+
+
+body
+  - flash.each do |flash_type, message|
+    - case flash_type.to_s
+    - when "success", "notice"
+      - bg_color = "bg-green-100"
+      - text_color = "text-green-700"
+      - icon = "✅"
+    - when "error", "alert"
+      - bg_color = "bg-red-100"
+      - text_color = "text-red-700"
+      - icon = "❌"
+    - else
+      - bg_color = "bg-gray-100"
+      - text_color = "text-gray-700"
+      - icon = "ℹ️"
+
+    .fixed.mt-2.z-50.bottom-0.left-0.ml-1.lg:top-auto.lg:bottom-5.lg:ml-4.lg:left-5[data-controller="flash-notification"]
+      .inline-flex.gap-3.px-3.py-2.rounded.shadow.items-center.justify-between.lg:py-4.lg:px-5[class=bg_color]
+        span.text-xl.font-bold[class=text_color] = icon
+        p.text-medium.text-sm.font-semibold.lg:text-base[class=text_color] = message
+        span.ml-2.cursor-pointer[data-action="click->flash#_closeFlash" class=text_color] X
+  main.container.mx-auto.mt-10.px-5.flex
+    = yield
