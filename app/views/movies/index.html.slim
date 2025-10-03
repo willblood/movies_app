@@ -1,0 +1,45 @@
+div.container.mx-auto.p-6
+  h1.font-bold.text-3xl.mb-6 My Movie Watch List
+
+  div.flex-flex-col.items-center.max-w-500
+    / ================= Left Side (Recipe List) =================
+    div.col-span-2.space-y-4
+      / Filter Buttons
+      div.flex.space-x-4.mb-6
+        = form_with url: movies_path, method: :get, class: "flex gap-x-5" do |f|
+          = f.select :filter, options_for_select([['All', 'all'], ['Watched', 'read'], ['Unwatched', 'unread']], params[:filter]), class: "border rounded-lg p-2 bg-orange-500 text-white"
+          = f.submit "Filter", class: "bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+      - if @movies.empty?
+        p.text-gray-600 No movies found. Please add a new movie using the form on the right.
+      else
+        - @movies.each do |movie|
+          div.bg-gray-200.shadow-md.rounded-xl.p-2.max-w-300.mb-5
+            h2.text-xl.font-semibold.mb-2 = movie.title
+            p.text-gray-600.mb-3 = movie.year
+            .flex.justify-between
+              div.flex.space-x-3
+                = link_to "View Details", movie_path(movie), class: "text-blue-600 hover:underline p-2 bg-blue-200"
+                = link_to "Edit", edit_movie_path(movie), class: "text-white hover:underline p-2 bg-yellow-500"
+                = form_with url: movie_path(movie), method: :delete do |f|
+                  = f.submit "Delete", class: "text-white hover:underline p-2 bg-red-500"
+              div
+                = form_with model: movie, url: movie_path(movie), method: :patch do |f|
+                  = f.check_box :read, checked: movie.read, onchange: "this.form.submit()", class: "h-5 w-5 text-green-600 rounded"
+                  = f.label :read, "Watched", class: "ml-2 text-gray-700" 
+                  -f.text_field :title, type: "hidden"
+                  -f.text_field :year, type: "hidden"
+
+    / ================= Right Side (Add New Recipe Form) =================
+    div.bg-gray-50.shadow-md.rounded-xl.p-6.max-w-200.mt-10
+      h2.text-lg.font-semibold.mb-4 Add New Movie
+
+      = form_with url: movies_path, method: :post do |f|
+        div.mb-4
+          = f.label :title, "Movie Name", class: "block text-sm font-medium text-gray-700 mb-1"
+          = f.text_field :title, class: "w-full border rounded-lg p-2"
+
+        div.mb-4
+          = f.label :year, "Year", class: "block text-sm font-medium text-gray-700 mb-1"
+          = f.date_field :year, class: "w-full border rounded-lg p-2"
+
+        = f.submit "Add Movie", class: "bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
